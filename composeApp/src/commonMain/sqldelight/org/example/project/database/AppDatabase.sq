@@ -1,0 +1,50 @@
+-- Tabla para el Perfil
+CREATE TABLE PerfilEntity (
+    matricula TEXT NOT NULL PRIMARY KEY,
+    nombre TEXT NOT NULL,
+    carrera TEXT NOT NULL,
+    ultimoAcceso TEXT
+);
+
+-- Tabla para Carga Académica
+CREATE TABLE CargaEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    materia TEXT NOT NULL,
+    docente TEXT NOT NULL,
+    horario TEXT NOT NULL
+);
+
+-- Tabla para Kardex con el tipo corregido
+CREATE TABLE KardexEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    materia TEXT NOT NULL,
+    calificacion INTEGER,
+    periodo TEXT NOT NULL
+);
+
+-- CONSULTAS
+getPerfil:
+SELECT * FROM PerfilEntity LIMIT 1;
+
+insertPerfil:
+INSERT OR REPLACE INTO PerfilEntity(matricula, nombre, carrera, ultimoAcceso)
+VALUES (:matricula, :nombre, :carrera, :ultimoAcceso);
+
+getCarga:
+SELECT * FROM CargaEntity;
+
+insertCarga:
+INSERT OR REPLACE INTO CargaEntity(materia, docente, horario)
+VALUES (:materia, :docente, :horario);
+
+getKardex:
+SELECT * FROM KardexEntity;
+
+insertKardex:
+INSERT OR REPLACE INTO KardexEntity(materia, calificacion, periodo)
+VALUES (:materia, :calificacion, :periodo);
+
+clearAllData:
+DELETE FROM PerfilEntity;
+DELETE FROM CargaEntity;
+DELETE FROM KardexEntity;
