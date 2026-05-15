@@ -4,9 +4,8 @@ import android.content.Context
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 
-actual class DriverFactory(private val context: Context) {
-    actual fun createDriver(): SqlDriver {
-        // AndroidSqliteDriver se encarga de crear las tablas si no existen
+class AndroidDriverFactory(private val context: Context) : DriverFactory {
+    override fun createDriver(): SqlDriver {
         return AndroidSqliteDriver(
             schema = SiceDatabase.Schema,
             context = context,

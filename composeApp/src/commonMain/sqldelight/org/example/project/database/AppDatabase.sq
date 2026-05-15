@@ -22,29 +22,58 @@ CREATE TABLE KardexEntity (
     periodo TEXT NOT NULL
 );
 
--- CONSULTAS
-getPerfil:
-SELECT * FROM PerfilEntity LIMIT 1;
+-- Tabla para Calificaciones por Unidades (Actualizada a 10)
+CREATE TABLE UnidadesEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    materia TEXT NOT NULL,
+    u1 INTEGER,
+    u2 INTEGER,
+    u3 INTEGER,
+    u4 INTEGER,
+    u5 INTEGER,
+    u6 INTEGER,
+    u7 INTEGER,
+    u8 INTEGER,
+    u9 INTEGER,
+    u10 INTEGER,
+    promedio TEXT
+);
 
-insertPerfil:
-INSERT OR REPLACE INTO PerfilEntity(matricula, nombre, carrera, ultimoAcceso)
-VALUES (:matricula, :nombre, :carrera, :ultimoAcceso);
+-- NUEVA: Tabla para Calificaciones Finales y Especialidad
+CREATE TABLE FinalesEntity (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    materia TEXT NOT NULL,
+    acreditacion TEXT,
+    calificacion INTEGER,
+    observaciones TEXT -- Para "GENERACION 2022" o "ESP. IND 4.0"
+);
 
-getCarga:
-SELECT * FROM CargaEntity;
+-- CONSULTAS EXISTENTES
+getPerfil: SELECT * FROM PerfilEntity LIMIT 1;
+insertPerfil: INSERT OR REPLACE INTO PerfilEntity(matricula, nombre, carrera, ultimoAcceso) VALUES (:matricula, :nombre, :carrera, :ultimoAcceso);
+getCarga: SELECT * FROM CargaEntity;
+insertCarga: INSERT OR REPLACE INTO CargaEntity(materia, docente, horario) VALUES (:materia, :docente, :horario);
+getKardex: SELECT * FROM KardexEntity;
+insertKardex: INSERT OR REPLACE INTO KardexEntity(materia, calificacion, periodo) VALUES (:materia, :calificacion, :periodo);
 
-insertCarga:
-INSERT OR REPLACE INTO CargaEntity(materia, docente, horario)
-VALUES (:materia, :docente, :horario);
+-- CONSULTAS NUEVAS
+getUnidades:
+SELECT * FROM UnidadesEntity;
 
-getKardex:
-SELECT * FROM KardexEntity;
+insertUnidades:
+INSERT OR REPLACE INTO UnidadesEntity(materia, u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, promedio)
+VALUES (:materia, :u1, :u2, :u3, :u4, :u5, :u6, :u7, :u8, :u9, :u10, :promedio);
 
-insertKardex:
-INSERT OR REPLACE INTO KardexEntity(materia, calificacion, periodo)
-VALUES (:materia, :calificacion, :periodo);
+getFinales:
+SELECT * FROM FinalesEntity;
+
+insertFinales:
+INSERT OR REPLACE INTO FinalesEntity(materia, acreditacion, calificacion, observaciones)
+VALUES (:materia, :acreditacion, :calificacion, :observaciones);
 
 clearAllData:
 DELETE FROM PerfilEntity;
 DELETE FROM CargaEntity;
 DELETE FROM KardexEntity;
+DELETE FROM UnidadesEntity;
+DELETE FROM FinalesEntity;

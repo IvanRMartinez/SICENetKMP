@@ -3,7 +3,7 @@ package org.example.project.database
 import app.cash.sqldelight.db.SqlDriver
 
 // Definimos la expectativa: cada plataforma debe proveer su propio Driver
-expect class DriverFactory {
+interface DriverFactory {
     fun createDriver(): SqlDriver
 }
 
