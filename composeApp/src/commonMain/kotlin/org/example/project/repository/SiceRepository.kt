@@ -8,6 +8,14 @@ import org.example.project.database.UnidadesEntity
 
 interface SiceRepository {
 
+    suspend fun fetchRemotePerfil(): Result<PerfilEntity>
+    suspend fun fetchRemoteCarga(): Result<List<CargaEntity>>
+    suspend fun fetchRemoteKardex(lineamiento: Int): Result<List<KardexEntity>>
+    suspend fun fetchRemoteUnidades(): Result<List<UnidadesEntity>>
+    suspend fun fetchRemoteFinales(modEducativo: Int): Result<List<FinalesEntity>>
+
+    suspend fun sincronizarLogin(matricula: String, contrasenia: String, tipoUsuario: String): Result<Unit>
+
     // ==========================================
     // Funciones para el Perfil
     // ==========================================

@@ -25,7 +25,7 @@ class SiceRepositoryImpl(
     // ==========================================
     // Operación Especial: LOGIN
     // ==========================================
-    suspend fun sincronizarLogin(matricula: String, contrasenia: String, tipoUsuario: String): Result<Unit> {
+    override suspend fun sincronizarLogin(matricula: String, contrasenia: String, tipoUsuario: String): Result<Unit> {
         return try {
             val cuerpoXml = buildLoginSoapBody(matricula, contrasenia, tipoUsuario)
             val xmlResponse = api.callSoap("http://tempuri.org/accesoLogin", cuerpoXml)
@@ -56,7 +56,7 @@ class SiceRepositoryImpl(
         queries.insertPerfil(matricula, nombre, carrera, ultimoAcceso)
     }
 
-    suspend fun fetchRemotePerfil(): Result<PerfilEntity> {
+    override suspend fun fetchRemotePerfil(): Result<PerfilEntity> {
         return try {
             val cuerpoXml = buildPerfilSoapBody()
             val xml = api.callSoap("http://tempuri.org/getAlumnoAcademicoWithLineamiento", cuerpoXml)
@@ -92,7 +92,7 @@ class SiceRepositoryImpl(
         queries.insertCarga(materia, docente, horario)
     }
 
-    suspend fun fetchRemoteCarga(): Result<List<CargaEntity>> {
+    override suspend fun fetchRemoteCarga(): Result<List<CargaEntity>> {
         return try {
             val xml = api.callSoap("http://tempuri.org/getCargaAcademicaByAlumno", buildCargaAcademicaSoapBody())
             val raw = SoapParser.extractTagValue(xml, "getCargaAcademicaByAlumnoResult") ?: ""
@@ -126,7 +126,7 @@ class SiceRepositoryImpl(
         queries.insertKardex(materia, calificacion?.toLong(), periodo)
     }
 
-    suspend fun fetchRemoteKardex(lineamiento: Int): Result<List<KardexEntity>> {
+    override suspend fun fetchRemoteKardex(lineamiento: Int): Result<List<KardexEntity>> {
         return try {
             // CORREGIDO: Cambiado api.post por api.callSoap con su respectiva action url
             val xml = api.callSoap(
@@ -139,6 +139,7 @@ class SiceRepositoryImpl(
             val root = jsonParser.decodeFromString<KardexRootRemote>(jsonStr)
 
             queries.transaction {
+
                 root.lstKardex.forEach { item ->
                     queries.insertKardex(
                         materia = item.materia,
@@ -177,7 +178,7 @@ class SiceRepositoryImpl(
         )
     }
 
-    suspend fun fetchRemoteUnidades(): Result<List<UnidadesEntity>> {
+    override suspend fun fetchRemoteUnidades(): Result<List<UnidadesEntity>> {
         return try {
             val xml = api.callSoap("http://tempuri.org/getCalifUnidadesByAlumno", buildCalificacionesUnidadesSoapBody())
             val raw = SoapParser.extractTagValue(xml, "getCalifUnidadesByAlumnoResult") ?: ""
@@ -214,7 +215,7 @@ class SiceRepositoryImpl(
         queries.insertFinales(materia, acreditacion, calificacion?.toLong(), observaciones)
     }
 
-    suspend fun fetchRemoteFinales(modEducativo: Int): Result<List<FinalesEntity>> {
+    override suspend fun fetchRemoteFinales(modEducativo: Int): Result<List<FinalesEntity>> {
         return try {
             val xml = api.callSoap("http://tempuri.org/getAllCalifFinalByAlumnos", buildCalificacionesFinalesSoapBody(modEducativo))
             val raw = SoapParser.extractTagValue(xml, "getAllCalifFinalByAlumnosResult") ?: ""

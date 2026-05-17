@@ -77,3 +77,7 @@ DELETE FROM CargaEntity;
 DELETE FROM KardexEntity;
 DELETE FROM UnidadesEntity;
 DELETE FROM FinalesEntity;
+
+clearKardex: DELETE FROM KardexEntity;
+clearUnidades: DELETE FROM UnidadesEntity;
+clearFinales: DELETE FROM FinalesEntity;
